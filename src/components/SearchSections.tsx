@@ -7,10 +7,14 @@ const SearchSections = ({ getSearchResults }: any) => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:3000/api/sections?q=${q}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/sections?q=${q}`
+    );
+
     if (!res.ok) {
       throw new Error("Error while fetching");
     }
+
     const datas = await res.json();
 
     getSearchResults(datas);

@@ -9,6 +9,7 @@ const HeaderPage = () => {
         <Link href="/about">About</Link>
         <Link href="/about/teams">Our teams</Link>
         <Link href="/repos">Repositories</Link>
+        <Link href="/users">Users</Link>
       </div>
     </header>
   );

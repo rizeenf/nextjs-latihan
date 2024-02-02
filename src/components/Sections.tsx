@@ -10,7 +10,7 @@ const Sections = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("http://localhost:3000/api/sections");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/sections`);
 
       if (!res.ok) {
         throw new Error("Error while fetching");
