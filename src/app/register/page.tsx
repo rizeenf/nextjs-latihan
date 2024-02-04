@@ -5,6 +5,8 @@ import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { v4 as uuidv4 } from "uuid";
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -18,7 +20,39 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (datas: TAuthSchema) => {
-    //
+    const data = JSON.stringify({
+      id: uuidv4(),
+      createdAt: new Date(),
+      name: datas.name,
+      avatar:
+        "https://robohash.org/consequaturexplicabovoluptatem.png?size=50x50&set=set1",
+      datas: {
+        response: 200,
+        email: datas.email,
+        password: datas.password,
+      },
+    });
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      });
+      const resData = await res.json();
+      console.log(resData);
+
+      if (res.status == 200) {
+        router.push("/users");
+        toast.success("Successfully register.");
+      } else {
+        toast.error("Register failed, please try again.");
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   return (

@@ -47,5 +47,13 @@ export const AuthSchema = z
     path: ["cPassword"],
   });
 
+export const AuthLoginSchema = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters." }),
+});
+
 export type TAuthSchema = z.infer<typeof AuthSchema>;
+export type TAuthLoginSchema = z.infer<typeof AuthLoginSchema>;
 export type TUsersSchema = z.infer<typeof usersSchema>;
