@@ -4,9 +4,8 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "About page Rize's Blog",
+  title: "About page Rize s Blog",
 };
-
 
 const AboutPage = async () => {
   const session = await getServerSession(authOptions);
@@ -21,12 +20,12 @@ const AboutPage = async () => {
       <div>
         <h2 className="text-xl mt-5 text-center font-bold">Our Story</h2>
         <p className="text-gray-600">
-          Welcome to rizkin.my.id – where innovation and creativity converge.
-          Our journey began with a simple yet ambitious goal: to redefine
-          digital experiences through cutting-edge frontend development. Founded
-          by Rizki N, a passionate React.js enthusiast, we've evolved into a
+          Welcome to rizkin.my.id, where innovation and creativity converge. Our
+          journey began with a simple yet ambitious goal: to redefine digital
+          experiences through cutting-edge frontend development. Founded by
+          Rizki N, a passionate React.js enthusiast, we&apos;ve evolved into a
           team of dedicated professionals driven by a shared vision of pushing
-          the boundaries of what's possible in the digital realm.
+          the boundaries of what&apos;s possible in the digital realm.
         </p>
       </div>
       <div>
@@ -35,9 +34,9 @@ const AboutPage = async () => {
           At the core of our mission is the commitment to crafting seamless,
           user-centric interfaces that leave a lasting impression. We believe
           that every line of code has the power to tell a story, and we are here
-          to tell yours. Whether you're an individual, startup, or established
-          business, our mission is to elevate your online presence through the
-          magic of React.js and frontend excellence.
+          to tell yours. Whether you&apos;re an individual, startup, or
+          established business, our mission is to elevate your online presence
+          through the magic of React.js and frontend excellence.
         </p>
       </div>
       <div>

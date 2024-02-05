@@ -7,10 +7,6 @@ export async function GET() {
     `https://65bb679052189914b5bc0331.mockapi.io/api/users`,
     {
       method: "GET",
-      next: {
-        revalidate: 60,
-      },
-      cache: "no-cache",
     }
   );
 

@@ -6,10 +6,10 @@ import { redirect } from "next/navigation";
 import { resolve } from "path";
 
 export const metadata: Metadata = {
-  title: "Repos - Rize's Blog",
+  title: "Repos - Rize s Blog",
 };
 
-export const fetchRepos = async () => {
+const fetchRepos = async () => {
   const response = await fetch("https://api.github.com/users/rizeenf/repos", {
     next: {
       revalidate: 60 * 3, //3 minutes cache

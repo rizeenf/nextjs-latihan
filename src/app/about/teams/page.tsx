@@ -32,7 +32,7 @@ const TeamsPage = async () => {
         <h4 className="text-2xl font-semibold mt-10">R Nurpadilah</h4>
         <p className="text-gray-600">
           Role: UI/UX Designer <br />
-          Team member's introduction. Share a bit about their background,
+          Team member&apos;s introduction. Share a bit about their background,
           expertise, and what they bring to the team.
         </p>
       </div>

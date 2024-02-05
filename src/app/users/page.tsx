@@ -2,6 +2,7 @@ import { authOptions } from "@/lib/nextAuthOptions";
 import { fetchUsers } from "@/lib/utils/fetchUsers";
 import { TUsersSchema } from "@/lib/validators/usersSchema";
 import { getServerSession } from "next-auth";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -37,7 +38,12 @@ const UsersPage = async () => {
           key={item.id}
           className="flex flex-row flex-wrap gap-3 items-center"
         >
-          <img src={item.avatar} alt={`${item.name} avatar`} />
+          <Image
+            src={item.avatar}
+            alt={`${item.name} avatar`}
+            width={100}
+            height={100}
+          />
           <p className="font-semibold">{item.name}</p>
           <p>{item.datas.email}</p>
         </div>
