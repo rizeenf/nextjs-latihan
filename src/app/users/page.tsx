@@ -1,18 +1,19 @@
-import { TUsersSchema } from "@/utils/usersSchema";
+import { authOptions } from "@/lib/nextAuthOptions";
+import { fetchUsers } from "@/lib/utils/fetchUsers";
+import { TUsersSchema } from "@/lib/validators/usersSchema";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
-
-const fetchUsers = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`);
-
-  const data = await res.json();
-
-  return data;
-};
+import { redirect } from "next/navigation";
 
 const UsersPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return redirect("/api/auth/signin");
+  }
+
   const data = await fetchUsers();
 
-  console.log({ data });
   return (
     <div>
       <div className="w-full my-5 flex">

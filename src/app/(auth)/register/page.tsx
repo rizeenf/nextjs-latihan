@@ -1,5 +1,5 @@
 "use client";
-import { AuthSchema, TAuthSchema } from "@/utils/usersSchema";
+import { AuthSchema, TAuthSchema } from "@/lib/validators/usersSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
@@ -7,57 +7,81 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
+import { hashSync } from "bcrypt-ts";
+import { fetchUsersAuth } from "@/lib/utils/fetchUsers";
+import { TAuth } from "@/types/type";
+import { useState } from "react";
 
 const RegisterPage = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
+  const saltRounds = 10;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isLoading, isSubmitSuccessful },
+    formState: { errors },
   } = useForm<TAuthSchema>({
     resolver: zodResolver(AuthSchema),
   });
 
   const onSubmit = async (datas: TAuthSchema) => {
-    const data = JSON.stringify({
-      id: uuidv4(),
-      createdAt: new Date(),
-      name: datas.name,
-      avatar:
-        "https://robohash.org/consequaturexplicabovoluptatem.png?size=50x50&set=set1",
-      datas: {
-        response: 200,
-        email: datas.email,
-        password: datas.password,
-      },
-    });
+    setIsLoading(true);
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    const userData = await fetchUsersAuth();
+
+    const foundUser = userData.find(
+      (user: TAuth) => user.email === datas.email
+    );
+
+    if (!foundUser) {
+      const passwordHash = hashSync(datas.password, saltRounds);
+      const data = JSON.stringify({
+        id: uuidv4(),
+        createdAt: new Date(),
+        name: datas.name,
+        avatar:
+          "https://robohash.org/consequaturexplicabovoluptatem.png?size=50x50&set=set1",
+        datas: {
+          response: 200,
+          email: datas.email,
+          password: passwordHash,
         },
-        body: data,
       });
-      const resData = await res.json();
-      console.log(resData);
 
-      if (res.status == 200) {
-        router.push("/users");
-        toast.success("Successfully register.");
-      } else {
-        toast.error("Register failed, please try again.");
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: data,
+        });
+        const resData = await res.json();
+        console.log(resData);
+
+        if (res.status == 200) {
+          router.push("/users");
+          toast.success("Successfully register.");
+        } else {
+          toast.error("Register failed, please try again.");
+        }
+      } catch (error) {
+        console.error("Error", error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error", error);
+    } else {
+      toast.error("Register failed, email aleady registered.");
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="max-w-md w-full">
       <div className="py-12 w-full">
+        <h2 className=" self-center text-3xl mb-5 font-semibold">Register</h2>
+
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-1 py-1">
             <label htmlFor="datas.email">Email</label>
@@ -117,7 +141,7 @@ const RegisterPage = () => {
             <button
               disabled={isLoading}
               type="submit"
-              className="text-base items-center justify-center font-bold p-3 rounded-lg shadow-md shadow-gray-600 grid gap-1 py-4 hover:opacity-70"
+              className="text-base items-center flex justify-center font-bold p-3 rounded-lg shadow-md shadow-gray-600 gap-1 py-4 hover:opacity-70 disabled:text-gray-500"
               onClick={() => console.log("Clicked")}
             >
               {isLoading ? (
@@ -126,10 +150,6 @@ const RegisterPage = () => {
               Register
             </button>
           </div>
-
-          {isSubmitSuccessful && (
-            <span className="text-xs text-gray-500">Register successfully</span>
-          )}
         </form>
         <div className="flex justify-center items-center mt-10">
           <span className="text-sm">

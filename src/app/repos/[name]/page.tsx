@@ -1,10 +1,30 @@
 import Repo from "@/components/Repo";
 import RepoDetails from "@/components/RepoDetails";
+import { authOptions } from "@/lib/nextAuthOptions";
 import { Loader2 } from "lucide-react";
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 
-const RepoPage = ({ params }: { params: { name: string } }) => {
+type Props = {
+  params: { name: string };
+};
+
+export async function generateMetadata({ params }: Props) {
+  return {
+    title: `Repos - ${params.name}`,
+  };
+}
+
+const RepoPage = async ({ params }: Props) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return redirect("/api/auth/signin");
+  }
+
   const { name } = params;
   return (
     <div className="max-w-7xl">

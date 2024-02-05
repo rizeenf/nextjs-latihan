@@ -1,4 +1,20 @@
-const AboutPage = () => {
+import { authOptions } from "@/lib/nextAuthOptions";
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+
+export const metadata: Metadata = {
+  title: "About page Rize's Blog",
+};
+
+
+const AboutPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return redirect("/api/auth/signin");
+  }
+
   return (
     <section className="max-w-xl text-justify">
       <h2 className="text-4xl font-bold">About rizkin.my.id</h2>

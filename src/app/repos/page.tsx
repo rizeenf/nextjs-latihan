@@ -1,5 +1,13 @@
 import RepoLists from "@/components/RepoLists";
+import { authOptions } from "@/lib/nextAuthOptions";
+import { Metadata } from "next";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { resolve } from "path";
+
+export const metadata: Metadata = {
+  title: "Repos - Rize's Blog",
+};
 
 export const fetchRepos = async () => {
   const response = await fetch("https://api.github.com/users/rizeenf/repos", {
@@ -15,6 +23,12 @@ export const fetchRepos = async () => {
 };
 
 const ReposPage = async () => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return redirect("/api/auth/signin");
+  }
+
   const repos = await fetchRepos();
 
   return (

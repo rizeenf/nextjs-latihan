@@ -1,4 +1,4 @@
-import { TUsersSchema } from "@/utils/usersSchema";
+import { TUsersSchema } from "@/lib/validators/usersSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 

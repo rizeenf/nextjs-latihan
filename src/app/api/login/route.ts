@@ -1,4 +1,4 @@
-import { TAuthLoginSchema } from "@/utils/usersSchema";
+import { TAuthLoginSchema } from "@/lib/validators/usersSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
